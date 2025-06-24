@@ -1,0 +1,22 @@
+Cyberpunk Button
+-------------------------
+
+A sleek, futuristic interactive button designed for fun, websites, apps, or commercial use.
+Features glowing neon effects, stardust particle bursts, glitch visuals, and immersive sound effect.
+
+Developed by: ShinEcliptix
+GitHub: https://github.com/ShinEcliptix
+
+Use Cases:
+- Websites
+- Games
+- Personal projects
+- Commercial products
+- UI demos
+- And whatever you want
+
+Audio:
+- Pressed sound (local file 'button_sound.mp3' required)
+
+License: Free for both commercial and personal use. Attribution to ShinEcliptix appreciated.
+
