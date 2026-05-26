@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sakura Enter Button</title>
+
+  <!-- Japanese Style Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      height:100vh;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      overflow:hidden;
+
+      background:
+      radial-gradient(
+        circle at top,
+        #2b1020 0%,
+        #12070d 45%,
+        #080304 100%
+      );
+
+      font-family:'Zen Tokyo Zoo', cursive;
+      position:relative;
+    }
+
+    /* =========================
+       SAKURA BUTTON
+    ========================== */
+    .sakura-button{
+
+      position:relative;
+
+      display:flex;
+      align-items:center;
+      gap:14px;
+
+      padding:18px 50px;
+
+      font-size:24px;
+      letter-spacing:3px;
+
+      color:#ffe7f2;
+
+      border:
+      2px solid rgba(255,192,220,0.6);
+
+      cursor:pointer;
+      outline:none;
+
+      overflow:hidden;
+
+      border-radius:4px;
+
+      background:
+      linear-gradient(
+        180deg,
+        rgba(255,192,220,0.35),
+        rgba(255,120,170,0.18)
+      );
+
+      box-shadow:
+      0 0 12px rgba(255,170,210,0.6),
+      inset 0 0 12px rgba(255,220,235,0.15);
+
+      backdrop-filter:blur(4px);
+
+      transition:
+      transform .15s ease,
+      box-shadow .2s ease,
+      background .2s ease;
+
+      user-select:none;
+
+      /* Japanese inspired shape */
+      clip-path:polygon(
+        0 0,
+        92% 0,
+        100% 25%,
+        100% 100%,
+        8% 100%,
+        0 75%
+      );
+    }
+
+    /* Decorative top line */
+    .sakura-button::before{
+
+      content:"";
+
+      position:absolute;
+
+      top:6px;
+      left:12px;
+
+      width:calc(100% - 24px);
+      height:1px;
+
+      background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,230,240,0.8),
+        transparent
+      );
+    }
+
+    /* Decorative corner */
+    .sakura-button::after{
+
+      content:"";
+
+      position:absolute;
+
+      right:10px;
+      bottom:8px;
+
+      width:18px;
+      height:18px;
+
+      border-right:
+      1px solid rgba(255,230,240,0.5);
+
+      border-bottom:
+      1px solid rgba(255,230,240,0.5);
+    }
+
+    /* Sakura flower icon */
+    .flower-icon{
+
+      font-size:22px;
+
+      color:#ffd4e7;
+
+      text-shadow:
+      0 0 8px rgba(255,200,225,0.7);
+
+      animation:
+      flowerFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes flowerFloat{
+
+      0%{
+        transform:
+        translateY(0px)
+        rotate(0deg);
+      }
+
+      50%{
+        transform:
+        translateY(-2px)
+        rotate(8deg);
+      }
+
+      100%{
+        transform:
+        translateY(0px)
+        rotate(0deg);
+      }
+    }
+
+    /* Text */
+    .button-text{
+
+      position:relative;
+      top:1px;
+
+      color:#fff3f8;
+    }
+
+    /* Hover */
+    .sakura-button:hover{
+
+      transform:
+      scale(1.04);
+
+      background:
+      linear-gradient(
+        180deg,
+        rgba(255,205,225,0.45),
+        rgba(255,130,180,0.24)
+      );
+
+      box-shadow:
+      0 0 22px rgba(255,180,215,0.8),
+      0 0 50px rgba(255,150,200,0.25);
+
+      color:#fff5fa;
+    }
+
+    /* Pressed */
+    .sakura-button.pressed{
+
+      transform:
+      scale(0.94);
+
+      background:
+      linear-gradient(
+        180deg,
+        rgba(255,170,205,0.25),
+        rgba(255,120,170,0.12)
+      );
+
+      box-shadow:
+      0 0 8px rgba(255,170,210,0.45),
+      inset 0 0 8px rgba(255,220,235,0.1);
+    }
+
+    /* =========================
+       CLICK PETALS
+    ========================== */
+    .petal{
+
+      position:fixed;
+
+      width:14px;
+      height:14px;
+
+      background:
+      linear-gradient(
+        145deg,
+        #ffd6e8,
+        #ff9fc5
+      );
+
+      border-radius:
+      70% 0 70% 0;
+
+      pointer-events:none;
+
+      opacity:.95;
+
+      box-shadow:
+      0 0 8px rgba(255,180,215,0.7);
+
+      animation:
+      petalFloat 900ms ease-out forwards;
+    }
+
+    @keyframes petalFloat{
+
+      0%{
+        transform:
+        translate(0,0)
+        rotate(0deg)
+        scale(1);
+
+        opacity:1;
+      }
+
+      100%{
+        transform:
+        translate(var(--dx), var(--dy))
+        rotate(var(--rot))
+        scale(.4);
+
+        opacity:0;
+      }
+    }
+
+    /* =========================
+       AMBIENT PETALS
+    ========================== */
+    .ambient-petal{
+
+      position:absolute;
+
+      width:10px;
+      height:10px;
+
+      background:
+      linear-gradient(
+        145deg,
+        #ffd6e8,
+        #ff9fc5
+      );
+
+      border-radius:
+      70% 0 70% 0;
+
+      opacity:.5;
+
+      animation:
+      ambientFall linear infinite;
+    }
+
+    @keyframes ambientFall{
+
+      from{
+        transform:
+        translateY(-120px)
+        rotate(0deg);
+      }
+
+      to{
+        transform:
+        translateY(110vh)
+        rotate(360deg);
+      }
+    }
+
+    /* Branding */
+    .branding{
+
+      position:absolute;
+
+      bottom:15px;
+
+      color:
+      rgba(255,220,235,0.65);
+
+      font-size:14px;
+
+      font-family:sans-serif;
+    }
+
+    .branding a{
+
+      color:#ffc1da;
+      text-decoration:none;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Ambient petals -->
+  <script>
+
+    for(let i = 0; i < 20; i++){
+
+      const p =
+      document.createElement("div");
+
+      p.classList.add("ambient-petal");
+
+      p.style.left =
+      Math.random() * window.innerWidth + "px";
+
+      p.style.animationDuration =
+      (6 + Math.random() * 8) + "s";
+
+      p.style.animationDelay =
+      (Math.random() * 5) + "s";
+
+      p.style.opacity =
+      Math.random() * 0.6;
+
+      document.body.appendChild(p);
+    }
+
+  </script>
+
+  <!-- Sakura Button -->
+  <button id="sakuraButton" class="sakura-button">
+
+
+    <span class="button-text">
+      Enter
+    </span>
+
+  </button>
+
+  <!-- Branding -->
+  <div class="branding">
+
+    Crafted by
+    <strong>ShinEcliptix</strong>
+    ·
+
+    <a href="https://github.com/ShinEcliptix" target="_blank">
+      GitHub
+    </a>
+
+  </div>
+
+  <!-- Audio -->
+  <audio
+    id="clickSound"
+    src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5d9e0b1b8f.mp3"
+    preload="auto">
+  </audio>
+
+  <audio
+    id="hoverSound"
+    src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a5d4a0c3d2.mp3"
+    preload="auto">
+  </audio>
+
+  <!-- JS -->
+  <script>
+
+    const button =
+    document.getElementById("sakuraButton");
+
+    const clickSound =
+    document.getElementById("clickSound");
+
+    const hoverSound =
+    document.getElementById("hoverSound");
+
+    let cooldown = false;
+
+    /* Hover */
+    button.addEventListener("mouseenter", () => {
+
+      hoverSound.currentTime = 0;
+
+      hoverSound.play().catch(() => {});
+    });
+
+    /* Click */
+    button.addEventListener("click", (e) => {
+
+      if(cooldown) return;
+
+      clickSound.currentTime = 0;
+
+      clickSound.play().catch(() => {});
+
+      button.classList.add("pressed");
+
+      const x = e.clientX;
+      const y = e.clientY;
+
+      /* Sakura burst */
+      for(let i = 0; i < 35; i++){
+
+        const petal =
+        document.createElement("span");
+
+        petal.classList.add("petal");
+
+        const angle =
+        Math.random() * Math.PI * 2;
+
+        const distance =
+        40 + Math.random() * 90;
+
+        const dx =
+        Math.cos(angle) * distance;
+
+        const dy =
+        Math.sin(angle) * distance + 40;
+
+        const rot =
+        (Math.random() * 720 - 360) + "deg";
+
+        petal.style.left = x + "px";
+        petal.style.top = y + "px";
+
+        petal.style.setProperty("--dx", `${dx}px`);
+        petal.style.setProperty("--dy", `${dy}px`);
+        petal.style.setProperty("--rot", rot);
+
+        document.body.appendChild(petal);
+
+        setTimeout(() => {
+          petal.remove();
+        }, 900);
+      }
+
+      cooldown = true;
+
+      button.disabled = true;
+
+      setTimeout(() => {
+
+        button.classList.remove("pressed");
+
+        cooldown = false;
+
+        button.disabled = false;
+
+      }, 400);
+    });
+
+  </script>
+
+</body>
+</html>

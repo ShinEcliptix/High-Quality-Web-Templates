@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyberpunk Stardust Button</title>
+
+  <!-- ===== Fonts ===== -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+  <!-- ===== CSS Styling ===== -->
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .cyber-button {
+      position: relative;
+      padding: 15px 30px;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #00ffff;
+      background: rgba(0, 255, 255, 0.1);
+      border: none;
+      cursor: pointer;
+      clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+      transition: all 0.15s ease;
+      box-shadow: 0 0 15px #00ffff, 0 0 50px #00ffff55, inset 0 0 10px #00ffffaa;
+      backdrop-filter: blur(3px);
+      overflow: visible;
+      outline: none;
+      user-select: none;
+    }
+
+    .cyber-button:hover {
+      background: rgba(0, 255, 255, 0.2);
+      transform: scale(1.03);
+      color: #aaffff;
+      text-shadow: 0 0 8px #00ffff;
+      box-shadow: 0 0 25px #00ffff, 0 0 60px #00ffffaa, inset 0 0 15px #00ffff;
+    }
+
+    .cyber-button.pressed {
+      background: rgba(0, 255, 255, 0.05);
+      color: #00cccc;
+      text-shadow: 0 0 5px #00cccc;
+      transform: scale(0.95);
+      box-shadow: 0 0 8px #00cccc, 0 0 30px #00cccc55, inset 0 0 5px #00ccccaa;
+    }
+
+    .cyber-button::before,
+    .cyber-button::after,
+    .cyber-button .shine-line {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(120deg, transparent 0%, #00ffff88 50%, transparent 100%);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .cyber-button::before { animation: shine 3s linear infinite; }
+    .cyber-button::after { animation: shine 3s linear infinite 1s, glitch 2s infinite alternate; }
+    .cyber-button .shine-line { animation: shine-slow 4.5s linear infinite 2s; }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    @keyframes shine-slow {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .cyber-button.pressed::before,
+    .cyber-button.pressed::after,
+    .cyber-button.pressed .shine-line {
+      background: linear-gradient(120deg, transparent 0%, rgba(0, 255, 255, 0.05) 50%, transparent 100%);
+    }
+
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: #00ffff;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particleMove 500ms ease-out forwards;
+      box-shadow: 0 0 8px #00ffff;
+    }
+
+    @keyframes particleMove {
+      0% { transform: translate(0, 0) scale(1.5); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0.3) rotate(15deg); opacity: 0; }
+    }
+
+    @keyframes glitch {
+      0% { clip-path: inset(0 0 0 0); }
+      20% { clip-path: inset(10% 0 70% 0); }
+      40% { clip-path: inset(50% 0 20% 0); }
+      60% { clip-path: inset(30% 0 50% 0); }
+      80% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(20% 0 40% 0); }
+    }
+
+    .branding {
+      position: absolute;
+      bottom: 15px;
+      font-size: 14px;
+      color: #00ffff;
+      opacity: 0.6;
+      text-align: center;
+    }
+
+    .branding a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HTML Markup ===== -->
+  <button id="coolCyberButton" class="cyber-button" style="font-family: 'Orbitron', sans-serif;">
+    Activate
+    <span class="shine-line"></span>
+  </button>
+
+  <div class="branding">
+    Crafted by <strong>ShinEcliptix</strong> · <a href="https://github.com/ShinEcliptix" target="_blank">GitHub</a>
+    <!-- End of ShinEcliptix Branding Section -->
+  </div>
+
+    <audio id="pressedSound" src="button_sound.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5d9e0b1b8f.mp3" preload="auto"></audio>
+  <audio id="hoverSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a5d4a0c3d2.mp3" preload="auto"></audio>
+
+  <!-- ===== JavaScript Interactivity ===== -->
+  <script>
+    const button = document.getElementById("coolCyberButton");
+    const clickSound = document.getElementById("clickSound");
+    const hoverSound = document.getElementById("hoverSound");
+const pressedSound = document.getElementById("pressedSound");
+    let cooldown = false;
+
+    button.addEventListener("click", (e) => {
+      if (cooldown) return;
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+      pressedSound.currentTime = 0;
+      pressedSound.play().catch(() => {});
+      button.classList.add("pressed");
+
+      const offsetX = e.clientX;
+      const offsetY = e.clientY;
+
+      for (let i = 0; i < 50; i++) {
+        const p = document.createElement("span");
+        p.classList.add("particle");
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() < 0.75 ? Math.random() * 30 : 50 + Math.random() * 50;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance + distance * 0.25;
+        p.style.setProperty("--dx", `${dx}px`);
+        p.style.setProperty("--dy", `${dy}px`);
+        p.style.left = `${offsetX}px`;
+        p.style.top = `${offsetY}px`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 500);
+      }
+
+      button.disabled = true;
+      cooldown = true;
+
+      setTimeout(() => {
+        button.classList.remove("pressed");
+        button.disabled = false;
+        cooldown = false;
+      }, 500);
+    });
+
+    button.addEventListener("mouseenter", () => {
+      hoverSound.currentTime = 0;
+      hoverSound.play().catch(() => {});
+    });
+  </script>
+
+  <!-- ShinEcliptix Branding -->
+
+</body>
+</html>
